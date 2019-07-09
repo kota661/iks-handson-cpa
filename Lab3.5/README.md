@@ -1,7 +1,8 @@
-# Lab 3.5) 指定のイメージをk8sにデプロイしてみよう
+# Lab 3.5) 腕試し：IKS上にアプリをデプロイしてみよう
 
 
-Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデプロイしてみましょう
+Lab1-3で学んできたことを元に指定のコンテナイメージをK8sにデプロイしてみましょう。
+なお、このLabでは1つ1つの手順は記載していません。これまでの操作を思い出しながら試してみましょう。
 
 
 
@@ -9,9 +10,9 @@ Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデ�
 
 
 
-## 基本情報
+## アプリを公開するために必要な基本情報
 
-* Container Image
+* コンテナイメージ
   * kota661/pacman
 * Image Tags
   * v1
@@ -20,52 +21,125 @@ Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデ�
 
 
 
-## 方法
+## アプリをIKSにデプロイする
 
-これまで習った以下２パターンどちらで実行していただいても構いません
+これまで習った以下２パターンどちらで実行していただいても構いません。
 
-* Lab 3で学んだ マニフェストファイルを使用する場合
+* Lab 3で学んだ マニフェストファイルを使って**宣言的**にデプロイする
 
-* Lab 1 で学んだ kubectl run を使って命令的にデプロイする場合
+* Lab 1 で学んだ `kubectl run` を使って**命令的**にデプロイする
 
   
 
 
-## Lab 3で学んだ マニフェストファイルを使用する場合
-1. マニフェストファイルを取得
-   * Gitリポジトリ
+### Lab 3で学んだ マニフェストファイルを使用する場合
+1. マニフェストファイルを取得します。次のGitリポジトリを手元のPCにダウンロードします。
     https://github.com/kota661/pacman.git
    
-   > git clone {リポジトリ名}
+   <details><summary>ヒント</summary>
+ 
+   > リポジトリのダウンロードは`git clone`コマンドを使います
+ 
+    </details>
 
-2. デプロイに必要なマニフェストファイルが有るv1のディレクトリに移動
+2. デプロイに必要なマニフェストファイルが有る`v1`のディレクトリに移動します。
 
-   > cd pacman/v1
+   <details><summary>ヒント</summary>   
+ 
+    > ディレクトリの移動は`cd`コマンドを使います
+ 
+    </details>
 
-3. deployment.ymlを使ってアプリをデプロイ
+3. まずはアプリをデプロイします。ディレクトリ内の`deployment.yml`を使ってアプリをIKS上にデプロイしましょう。
 
-   > kubectl apply コマンドを利用します
-   > -f オプションを使ってdeployment.ymlを指定しましょう
+     <details><summary>ヒント1</summary>   
+ 
+     > マニフェストファイルの適用は`kubectl apply` コマンドを利用します
+ 
+    </details>
+     
+    <details><summary>ヒント2</summary>   
+    
+      > -f オプションを使うと適用するファイルを指定することができます
+    
+    </details>
+ 
+    <details><summary>ヒント3</summary>
+    
    > kubectl apply -f {ファイル名}
+    
+    </details>
+     
+4. アプリが正しくデプロイできたか確認してみましょう。
 
-4. service.ymlを使ってアプリを公開
+   <details><summary>ヒント1</summary>   
+ 
+   > クラスターの情報を取得するには`kubectl get` コマンドを利用します
+ 
+   </details>
+     
+   <details><summary>ヒント2</summary>   
+ 
+    > アプリはKubernetesでは`pod`という単位でデプロイされています
+ 
+    </details>
 
-   >  kubectl apply コマンドを利用します
-   > -f オプションを使ってdeployment.ymlを指定しましょう
-   > kubectl apply -f {ファイル名}
+4. 外部からアプリにアクセスできるようにするために、`Service`を作成します。ディレクトリ内の`service.yml`を使ってアプリを外部公開しましょう。
 
-5. アプリアクセスのためのワーカーノードのPublicIPを確認
+   <details><summary>ヒント1</summary>  
+ 
+   >  マニフェストファイルの適用は`kubectl apply` コマンドを利用します
+ 
+    </details>
+ 
+    <details><summary>ヒント2</summary>  
+    
+    > -f オプションを使うと適用するファイルを指定することができます
 
-   > ibmcloud ks workers mycluster
+    </details>
+   
+    <details><summary>ヒント3</summary>  
+ 
+     > kubectl apply -f {ファイル名}
+ 
+    </details>
 
-6. アプリアクセスのためのサービス公開ポートを確認
+6. `Service`が正しくデプロイできたか確認してみましょう。また、同時に外部からアプリにアクセスするための公開ポートも確認しておきましょう
 
-   > kubectl get svc
+    <details><summary>ヒント1</summary>  
 
-7. アプリにアクセス
+    > クラスターの情報を取得するには`kubectl get` コマンドを利用します
 
+    </details>
+    
+    <details><summary>ヒント2</summary>  
+
+    > kubectl get svc pacman
+    
+    </details>
+    
+    <details><summary>ヒント3</summary>  
+
+    > 公開ポートは`PORT(S)`欄に書かれています
+    
+    </details>
+    
+
+5. アプリにアクセスするためにIPアドレスを確認します。IKSのワーカーノードのPublic IPを確認しましょう。
+
+    <details><summary>ヒント</summary>  
+
+    > ibmcloud ks workers mycluster
+
+    </details>
+
+7. IPアドレスと公開ポートを組み合わせて、ブラウザからアプリにアクセスしてみましょう。
+
+    <details><summary>ヒント</summary>  
+ 
    > http://{ワーカーノードのPublicIP}:{サービス公開ポート}
    
+   </details>
    
 
 <details><summary>答えを表示</summary>
@@ -137,9 +211,9 @@ Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデ�
 
 
 
-## Lab 1 で学んだ kubectl run を使って命令的にデプロイする場合
+### Lab 1 で学んだ kubectl run を使って命令的にデプロイする場合
 
-1. kubectl run コマンドを使ってデプロイしましょう実行
+1. `kubectl run` コマンドを使ってデプロイしましょう
    > —imageオプションでContainer Imageを指定します
    > —portオプションでContainerの公開ポートを指定します
    > kubectl run pacman --image={イメージ名} --port={公開ポート名}
@@ -171,7 +245,7 @@ Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデ�
 
 <details><summary>答えを表示</summary>
 <p>
-1. kubectl run コマンドを使ってデプロイしましょう実行しましょう
+1. kubectl run コマンドを使ってデプロイしましょう
 
    ```shell
    kubectl run pacman --image=kota661/pacman:v1 --port=80
@@ -232,13 +306,13 @@ Lab1-3で学んたことを元に指定のコンテナイメージをK8sにデ�
 
 
 
-## Option： より遊べるようにライフを３つ&hearts;&hearts;&hearts;にバージョンアップしよう
+## オプション： より遊べるようにライフを３つ&hearts;&hearts;&hearts;にバージョンアップしよう
 
 
 
 1プレー で ライフが１つしかなく、すぐにゲームが終わってしまうというレビューが多数寄せられています。
 
-そこでv2を開発し1プレー で３つのライフに改良されました。v1の環境をv2にアップグレードしましょう
+そこでv2を開発し1プレー で３つのライフに改良されました。現在稼働中のv1の環境をv2にアップグレードしましょう
 
 
 
