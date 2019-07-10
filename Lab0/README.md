@@ -12,7 +12,7 @@ IKSハンズオンに必要なKubernetesクラスタの作成と、ローカル�
 ## 1. IBM CLIを使ってログイン
 ibmcloud cli を使ってIBM Cloudにログインします
 
-> Windowsユーザーの方は**コマンドプロンプト**を利用してください。
+> Windowsユーザーの方は**コマンドプロンプト**を利用し、**管理者として実行**を行ってください。
 
 ```
 $ ibmcloud login -a https://cloud.ibm.com
