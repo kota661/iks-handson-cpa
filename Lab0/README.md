@@ -18,6 +18,10 @@ ibmcloud cli を使ってIBM Cloudにログインします
 $ ibmcloud login -a https://cloud.ibm.com
 ```
 
+> シングルサインオン対応のアカウントをご利用の方は --ssoオプションを指定してください（IBM社員など)
+> 
+> `$ ibmcloud login -a https://cloud.ibm.com --sso`
+
 > output
 ```
 ibmcloud loginAPI endpoint: https://cloud.ibm.com
