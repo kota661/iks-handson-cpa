@@ -15,12 +15,12 @@ ibmcloud cli を使ってIBM Cloudにログインします
 > Windowsユーザーの方は**コマンドプロンプト**を利用し、**管理者として実行**を行ってください。
 
 ```
+# 標準アカウント
 $ ibmcloud login -a https://cloud.ibm.com
-```
 
-> シングルサインオン対応のアカウントをご利用の方は --ssoオプションを指定してください（IBM社員など)
-> 
-> `$ ibmcloud login -a https://cloud.ibm.com --sso`
+# シングル・サインオン・アカウント（IBM社員など)
+$ ibmcloud login -a https://cloud.ibm.com --sso
+```
 
 > output
 ```
