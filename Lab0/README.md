@@ -114,13 +114,45 @@ ibmcloud cli にてIKSクラスタを操作できるように接続情報を取�
 
 ## Tips, トラブルシュート
 * ibmcloud cliを操作している際に、バージョンアップしてくださいと表示される
-    * サンプルメッセージ
-        ```
-        Plugin version 0.2.102 is now available. To update run: ibmcloud plugin update container-service -r Bluemix
-        ```
-    * 対応方法
+
+    サンプルメッセージ
+
+    ```
+    Plugin version 0.4.66 is now available. To update run: ibmcloud plugin update container-service -r Bluemix
+    ```
+
+    **対応方法**
+
+    新しいプラグインにアップデートしてください
+    ```
+    $ ibmcloud plugin update --all
+    ```
+
+
+
+* １つのKubernetesクラスタを複数人で使いたい
+
+  お互いに影響が出ることなくハンズオンを行うために、以下コマンドを実行してください。
+
+  **対応方法**
+
+  ```
+  # 自分用のネームスペースを作成
+  # 例: kubectl create namespace satokota
+  $ kubectl create namespace <名前>
   
-        新しいプラグインにアップデートしてください
-        ```
-        $ ibmcloud plugin update --all
-        ```
+  # デフォルトのNamespaceを設定
+  # 例：kubectl config set-context --current --namespace=satokota
+  $ kubectl config set-context --current --namespace=<名前>
+  
+  # NAMESPACE が変更されていることを確認
+  $ kubectl config get-contexts --current
+  CURRENT   NAME                                    CLUSTER                                 AUTHINFO                                               NAMESPACE
+  *         satokota-cluster/blp2ahft0h82c4uu7o70   satokota-cluster/blp2ahft0h82c4uu7o70   satokota@jp.ibm.com/039dbe6794084c7cb514a276dd2345da   satokota
+  
+  # ハンズオン終了後、利用するネームスペースをdefaultへ戻す方法
+  kubectl config set-context --current --namespace=default
+  ```
+
+  
+
