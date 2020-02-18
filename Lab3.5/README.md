@@ -115,7 +115,7 @@ Lab1-3で学んできたことを元に指定のコンテナイメージをK8s�
    
     </details>
 
-4. 外部からアプリにアクセスできるようにするために、`Service`を作成します。ディレクトリ内の`service.yml`を使ってアプリを外部公開しましょう。
+4. 外部からアプリにアクセスできるようにするために、`Service`を作成します。ここではnode port方式を取ります。ディレクトリ内の`service-nodeport.yml`を使ってアプリを外部公開しましょう。
 
    <details><summary>ヒント1</summary>  
  
@@ -138,7 +138,7 @@ Lab1-3で学んできたことを元に指定のコンテナイメージをK8s�
    <details><summary>答え</summary>
  
     ```shell
-   kubectl apply -f service.yml
+   kubectl apply -f service-nodeport.yml
    ```
 
     </details>
